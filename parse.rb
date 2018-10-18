@@ -12,7 +12,7 @@ class Program
   attr_reader :stack
   
   def new_func name, arity=nil, &block
-    @table[name.intern] ||= -> do
+    @table[name] ||= -> do
       out = yield(*pop(arity || block.arity))
       push out if out
       nil
@@ -75,7 +75,21 @@ class Program
   end
   
   def execute *tokens
-    
+    tokens.each do |token|
+      case token
+      when Block
+        push token
+      when /"([^"]*)"/
+        push $1
+      when /-?[0-9]+/
+        push token.to_i
+      when /-?[0-9]*\.[0-9]+/
+        push token.to_f
+      when String
+        cmd = @table.fetch(token){ raise "Unrecognized command: #{token.inspect}" }
+        instance_exec &cmd
+      end   
+    end
   end
 end   
 Program.new()
@@ -90,6 +104,7 @@ class Block
   
   def inspect
     @vals.map{|x| x.is_a?(Block) ? x.inspect : x}.reject!(&:empty?).join(' ')
+  end
 end
 
 
