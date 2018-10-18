@@ -26,8 +26,12 @@ class Program:
                     self.blocks[-1].append('')
                     string = False
                 else:
-
                     string = True
+                continue
+            elif string:
+                self.blocks[-1][-1] += c
+                continue
+
 
             # print(c)
             if c in Program.TOKEN_WHITESPACE:
@@ -56,7 +60,8 @@ class Program:
 
     def execute(self, *tokens):
         for command in tokens:
-            pass
+            if command[0] == '"':
+                self.push(command[1:-1])
 
 
 
