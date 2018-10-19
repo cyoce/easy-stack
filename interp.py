@@ -1,5 +1,5 @@
 class Program: # 85 essential LOC
-    TOKEN_SEPARATORS = '()[]{}'
+    TOKEN_SEPARATORS = '()[]{},'
     TOKEN_WHITESPACE = ' \t\r\n'
     def __init__(self, debug=0):
         self.stack = []                 # program's runtime stack for calculations
@@ -7,6 +7,7 @@ class Program: # 85 essential LOC
         self.blocks = [self.main] # currently active code blocks. when a code block is completed, it is pushed to its containing block
         self.debug = debug
         self.vars = {}
+        self.arrays = []
     
     def peek(self):
         return self.stack[-1]
@@ -147,6 +148,15 @@ class Program: # 85 essential LOC
         
         elif c == 'print':
             print(self.pop())
+            
+        elif c == '[':
+            self.arrays.append([])
+            
+        elif c == ']':
+            self.push(self.arrays.pop())
+            
+        elif c == ',':
+            self.arrays[-1].append(self.pop())
             
         else:
             self.execute(*self.vars[c])
