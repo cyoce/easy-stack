@@ -3,8 +3,8 @@ class Program: # 85 essential LOC
     TOKEN_WHITESPACE = ' \t\r\n'
     def __init__(self, debug=0):
         self.stack = []                 # program's runtime stack for calculations
-        self.main_block = ['']          # the program as a whole represented by an encompassing block
-        self.blocks = [self.main_block] # currently active code blocks. when a code block is completed, it is pushed to its containing block
+        self.main = ['']          # the program as a whole represented by an encompassing block
+        self.blocks = [self.main] # currently active code blocks. when a code block is completed, it is pushed to its containing block
         self.debug = debug
         self.vars = {}
     
@@ -55,10 +55,10 @@ class Program: # 85 essential LOC
             else:
                 self.blocks[-1][-1] += c
 
-            if self.blocks[-1] is self.main_block and self.main_block[-1] == '':
-                self.execute(*self.main_block)
-                self.main_block[:] = [''] # reset main block
-        if self.debug == 1:
+            if self.blocks[-1] is self.main and self.main[-1] == '':
+                self.execute(*self.main)
+                self.main[:] = [''] # reset main block
+        if self.debug == 1 and self.blocks[-1] is self.main:
             print(self.stack)
             
     def execute(self, *tokens):

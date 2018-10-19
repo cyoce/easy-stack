@@ -3,6 +3,6 @@ from interp import Program
 p = Program(1)
 try:
     while True:
-        p.run(input('>> '))
+        p.run(input('-' * ~-len(p.blocks) + '>> '))
 except EOFError:
     print()
