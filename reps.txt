@@ -1,0 +1,10 @@
+prefix		stack	J
+F a (g a) 	:gF 	Fg
+F (g a) a  	:g~F 	F~g
+F a (g b)  	gF 	Fg
+F (g a) b  	~g~F 	
+f (G a b)  	FG 	f@G
+f (g a)  	gf 	f@g
+F (g a) (h a) 	:h~gF 	gFh
+F (g a) (h b) 	~h~gF 	(]g)~F(]h)
+F (G a b) (H a b)   	GFH
